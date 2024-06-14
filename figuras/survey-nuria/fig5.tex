@@ -1,0 +1,52 @@
+\begin{center}
+\resizebox{0.8\textwidth}{!}{\begin{tikzpicture}[mindmap,
+  level 1 concept/.append style={level distance=130,sibling angle=30},
+  extra concept/.append style={color=verde_pastel!50,text=black}]
+
+
+    \definecolor{rojo_pastel}{HTML}{FFABAB}
+    \definecolor{azul_pastel}{HTML}{6EB5FF}
+    \definecolor{verde_pastel}{HTML}{ADCFA3}
+    \definecolor{morado_pastel}{HTML}{CAA7BD}
+
+  \begin{scope}[mindmap, concept color=rojo_pastel, text=white]
+    \node [concept] at (-20, 3) {\textbf{Targeted/ Backdoor attacks}}
+      child [grow=30, level distance=120] {node [concept] (input) {Input-instance-key}
+      }
+      child [grow=-20, level distance=120] {node [concept] (pattern) {Pattern-key}};
+  \end{scope}
+
+  % Applied area: theoretical physics and its subfields
+
+  \begin{scope}[mindmap, concept color=azul_pastel,text=white]
+    \node [concept, scale=0.8] (design) at (-12,7.5) {Design of the pattern}
+      child [grow=-20, level distance=120]
+        {node [concept] (blended) {Blended Injection}
+        child [grow=25, level distance=80] {node [concept] (mix) {Blended-Accessory Injection}}
+        }
+      child [grow=20, level distance=120] 
+        {node [concept] (accessory) {Accessory Injection}};
+  \end{scope}
+  
+  
+    \begin{scope}[mindmap, concept color=verde_pastel, text=white]
+    \node [concept, scale=0.8] (number) at (-12, 2) {Number of patterns}
+      child [grow=20, level distance=120] {node [concept] (single) {Single}
+      }
+      child [grow=-20, level distance=120] {node [concept] (multiple) {Multiple}};
+  \end{scope}
+  
+      \begin{scope}[mindmap, concept color=morado_pastel, text=white]
+    \node [concept, scale=0.8] (var) at (-12, -3.5) {Variability}
+      child [grow=20, level distance=120] {node [concept] (static) {Static}
+      }
+      child [grow=-20, level distance=120] {node [concept] (dyn) {Dynamic}};
+  \end{scope}
+
+    \path (pattern) to[circle connection bar switch color=from (rojo_pastel) to (azul_pastel)] (design);
+    \path (mix) to[circle connection bar switch color=from (azul_pastel) to (azul_pastel)] (accessory);
+    \path (pattern) to[circle connection bar switch color=from (rojo_pastel) to (verde_pastel)] (number);
+    \path (pattern) to[circle connection bar switch color=from (rojo_pastel) to (morado_pastel)] (var);
+\end{tikzpicture}}
+    
+\end{center}

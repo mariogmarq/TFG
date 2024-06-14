@@ -1,0 +1,361 @@
+\chapter{Probabilidad e Inferencia Estadística}\label{sec:inferencia}
+En este capítulo desarrollaremos la Teoría de la Probabilidad y la Teoría de la Información de una forma muy básica con el objetivo de facilitar la comprensión del resto del trabajo~\cite{Goodfellow-et-al-2016}.
+
+La teoría de la probabilidad es un marco de trabajo matemático para representar la incertidumbre de los hechos. Nos proporciona tanto métodos para cuantificar la incertidumbre cómo axiomas para derivar nuevos enunciados. En la \ac{IA}, usamos la teoría de la probabilidad principalmente de dos maneras. Primero, las leyes de la probabilidad nos indican cómo un sistema de \ac{IA} debería de razonar, de forma que diseñamos nuestros algoritmos para calcular o aproximar varias expresiones derivadas usando la teoría de la probabilidad. Segundo, podemos usar probabilidad y estadística para analizar de manera teórica el comportamiento de sistemas de \ac{IA}.
+
+Mientras que la teoría de la probabilidad nos permite enunciar con incertidumbre y razonar en la presencia de esta, la teoría de la información nos permite cuantificar la cantidad de incertidumbre en una distribución de probabilidad.
+
+\section{Variables aleatorias}
+Para la definición de \ac{v.a.} necesitamos introducir conceptos básicos de teoría de la medida~\cite{ross-2019}.
+
+La primera definición básica para la teoría de la probabilidad es el concepto de $\sigma$-álgebra que nos servirá de base para construir los demás conceptos.
+
+\begin{definition}
+    Una familia de subconjuntos de $X$, denotada por $\Sigma$, se dirá que es una \textbf{$\sigma$-álgebra} sobre $X$ si se cumplen las siguientes propiedades:
+    \begin{enumerate}
+        \item El conjunto vacío $\emptyset$ es un elemento de $\Sigma$.
+        \item Si $A$ es un elemento de $\Sigma$, entonces el complementario de $A$, $\bar{A}=\Sigma \diagdown A$ también pertenece a $\Sigma$.
+        \item Sea $A_1, A_2, \ldots$ una sucesión de elementos de $\Sigma$, entonces la \textbf{unión numerable} de todos los conjuntos de la sucesión también es un elemento de $\Sigma$, es decir: $\bigcup A_i \in \Sigma$.
+    \end{enumerate}
+\end{definition}
+
+Una vez definido lo que es una $\sigma$-álgebra y con el concepto de función de medida de Teoría de la Medida podemos definir el espacio muestral, que contempla todos los posibles resultados y escenarios de un experimento aleatorio.
+
+\begin{definition}
+    Un \textbf{espacio muestral} se define como una tripleta $(\Omega, \mathcal{A}, \mu)$ tal que:
+    \begin{enumerate}
+        \item $\Omega$ es el conjunto de todos los sucesos elementales.
+        \item $\mathcal{A}$ es una familia de subconjuntos de $\Omega$ tal forma una $\sigma$-álgebra.
+        \item $\mu$ es una función de medida de conjuntos que permite asignar una probabilidad a los sucesos del espacio muestral.
+    \end{enumerate}
+\end{definition}
+
+Este concepto es clave de cara a los espacios probabilísticos, pues será la base para su definición y se le incorporará un conjunto de sucesos de interés sobre la que se define la función de probabilidad. El concepto de espacio de probabilidad o espacio probabilístico será crucial en el desarrollo de esta sección pues a partir de este se modelizan todos los experimentos aleatorios.
+
+\begin{definition}
+    Un \textbf{espacio de probabilidad} se define como una tripleta $(\Omega, \mathcal{B}, P)$ tales que:
+    \begin{enumerate}
+        \item $\Omega$ es el espacio muestral (sucesos elementales).
+        \item $\mathcal{B}$ es una familia de sucesos aleatorios que forma una $\sigma$-álgebra.
+        \item $P$ es una función de probabilidad que asigna una probabilidad a cada uno de los sucesos.
+    \end{enumerate}
+\end{definition}
+
+Para entender la definición anterior necesitaremos el concepto de función de probabilidad, la cual no es otra cosa que una extensión de función de medida verificando \textbf{Axiomas de Kolmogorov}.
+
+\begin{definition}
+    Decimos que una función de medida $P$ definida sobre una $\sigma$-álgebra $\mathcal{B}$ es una \textbf{medida o función de probabilidad} si verifica que:
+    \begin{enumerate}
+        \item \textbf{Axioma 1}: la función toma valores en el intervalo cerrado $[0, 1]$, es decir,
+        \begin{equation}
+            0 \le P(A) \le 1 \ \ \forall A \in \mathcal{B}.
+        \end{equation}
+
+        \item \textbf{Axioma 2}: la probabilidad del total es 1 y la del elemento vacío es 0, es decir,
+        \begin{equation}
+            P(\mathcal{B}) = 1 \ \ \ P(\emptyset) = 0.
+        \end{equation}
+
+        \item Si $A_1, A_2, \ldots$ son sucesos de $\mathcal{B}$ disjuntos dos a dos entonces la probabilidad de la unión es la suma de las probabilidades, es decir,
+        \begin{equation}
+            P(A_1 \cup A_2 \cup A_3 \cup \ldots) = \sum P(A_i).
+        \end{equation}
+    \end{enumerate}
+\end{definition}
+
+En este punto contamos con las herramientas necesarias para introducir el concepto de \ac{v.a.}.
+
+\begin{definition}
+    Una \textbf{Variable Aleatoria} (\ac{v.a.}) $X$ es una función real definida en el espacio de probabilidad $(\Omega, \mathcal{B}, P)$ asociada a un determinado experimento aleatorio, esto es
+    \begin{equation}
+        X: \Omega \to \mathbb{R}.
+    \end{equation}
+
+    Con respecto al número de diferentes valores que puede tomar una variable, esta será:
+    \begin{enumerate}
+        \item \textbf{Discreta}: toma un conjunto finito o numerable de valores.
+        \item \textbf{Continua}: toma un conjunto no numerable de valores.
+    \end{enumerate}
+\end{definition}
+
+\section{Distribuciones de Probabilidad}
+Una \textbf{distribución de probabilidad} de una variable aleatoria es una función que asigna a cada valor posible de la \ac{v.a.} una probabilidad (es decir, un valor real entre 0 y 1) de que este suceso ocurra.
+
+En función del tipo de \ac{v.a.} sobre el cual definamos la distribución de probabilidad podemos diferenciar dos tipos de distribuciones de probabilidad.
+
+\subsection{Distribuciones de Probabilidad definidas sobre \ac{v.a.} discretas}
+Las distribuciones de probabilidad definidas sobre \ac{v.a.} discretas se definen mediante la \textbf{\ac{f.m.p.}}. Esta función asocia a cada punto del espacio muestral una probabilidad de que el suceso ocurra.
+
+\begin{definition}
+    La \textbf{función masa de probabilidad (\ac{f.m.p.}) $P$} definida sobre el espacio muestral $\mathcal{A}$ de una variable aleatoria $X$ asigna a cada punto $x_i \in \mathcal{A}$ (suceso) una probabilidad de que este ocurra, es decir,
+    \begin{equation}
+        P(x_i) = p_i
+    \end{equation}
+
+    donde $p_i$ es la probabilidad del suceso $X=x_i$.
+\end{definition}
+
+Una \ac{f.m.p.} verifica las siguientes propiedades:
+\begin{proposition}
+    Sea $P$ una función masa de probabilidad definida sobre una variable aleatoria discreta $X$, entonces:
+    \begin{enumerate}
+        \item El dominio de $P$ serán todos los posibles valores de $X$.
+        \item $0 \le P(x) \le 1 \forall x \in X$. Así, una probabilidad de 0 indicará un suceso imposible, es decir, $X$ no puede tomar ese valor. Una probabilidad de 1 indicará un suceso seguro, es decir, $X$ siempre tomará ese valor.
+        \item $\sum_{x \in X}P(x) = 1$. Esta propiedad se conoce como \textbf{normalización} y es fundamental para cumplir los axiomas de Kolmogorov pues de no ser así podríamos tener sucesos con probabilidad mayor que 1 o que la probabilidad del total no fuese 1.
+    \end{enumerate}
+\end{proposition}
+
+
+\subsection{Distribuciones de Probabilidad definidas sobre \ac{v.a.} continuas}
+En el caso de las distribuciones de probabilidad definidas sobre una \ac{v.a.} continua utilizamos la noción de \ac{f.d.p.} para describirlas.
+
+\begin{definition}
+    Una función $p$ se dice que es una \textbf{función de densidad de probabilidad (\ac{f.d.p.})} sobre una \ac{v.a.} continua $X$ si cumple que:
+    \begin{itemize}
+        \item El dominio de $p$ son todos los posibles valores de $X$.
+        \item $p(x) \le 1\ \forall x \in X$.
+        \item $\int_X p(x) dx = 1$.
+    \end{itemize}
+\end{definition}
+
+En contraposición con la \ac{f.m.p.}, esta función no devuelve la probabilidad para un determinado punto del espacio muestra si no que devuelve la posibilidad de pertenecer a una región infinitesimal de volumen $dx$.
+
+\begin{proposition}
+    Para conocer la probabilidad de que nuestra \ac{v.a.} $X$ tome valores en un intervalo concreto, bastaría con integrar la \ac{f.d.p.} en dicho intervalo. En el caso univariante y suponiendo que nuestra variable toma valores reales se podría denotar de la siguiente manera:
+    \begin{equation}
+        P(x \in [a,b]) = P(a \le x \le b) = \int_a^bp(x)dx = \int_{[a,b]}p(x)dx.
+    \end{equation}
+\end{proposition}
+
+\section{Probabilidad Marginal}
+A veces, conocemos la distribución de probabilidad de una distribución sobre un conjunto de varias variables pero nos interesa conocer la distribución sobre un subconjunto de ellas. La distribución resultante sería conocida como \textbf{distribución marginal de probabilidad} del subconjunto de variables elegidas.
+
+A continuación mostramos como obtener las probabilidad marginales:
+\begin{enumerate}
+    \item \textbf{Caso discreto}: consideraremos las \ac{v.a.} discretas $X$ e $Y$ y su función de probabilidad conjunta $P(X,Y)$. Para obtener la distribución marginal de cualquiera de las \ac{v.a.} bastaría con considerar la regla de la suma para la otra variable. Esto es,
+    \begin{equation}
+        \forall x \in X,\ P(X=x)= \sum_y P(X=x, Y=y).
+    \end{equation}
+
+    \item \textbf{Caso continuo}: para \ac{v.a.} continuas $X$ e $Y$, conocida la función de densidad de probabilidad $p(X, Y)$. Para conocer la marginal respecto a una de sus variables, usaremos la integración en la otra variable. Es decir,
+    \begin{equation}
+        p(X) = \int_Y p(x, y)dy.
+    \end{equation}
+\end{enumerate}
+
+\section{Probabilidad Condicionada}
+En múltiples ecuaciones nos interesará conocer la probabilidad de que un suceso ocurra en el caso en el que otro haya ocurrido. A esta probabilidad se le conoce como \textbf{probabilidad condicionada}. Denotamos a la probabilidad de que $X=x$ cuando sabemos que $Y=y$ como $P(X=x|Y=y)$. Esta probabilidad se calcula mediante la siguiente expresión:
+\begin{equation}
+    P(X=x|Y=y) = \frac{P(X=x,Y=y)}{P(Y=y)}
+\end{equation}
+
+donde $P(Y=y)$ es la probabilidad marginal de que la variable $Y$ tome el valor $y$.
+
+\section{Conceptos y Resultados básicos de Probabilidad}
+Un resultado elemental de la Teoría de la Probabilidad que nos resultará muy útil es la conocida \textbf{Regla de la Cadena}:
+\begin{proposition}
+    \textbf{Regla de la Cadena}. Toda probabilidad conjunta sobre un conjunto de \ac{v.a.} puede ser descompuesta en distribuciones condicionales sobre una sola variable.
+\end{proposition}
+
+\begin{proof}
+    La demostración de esta proposición se puede decir que es una consecuencia directa de la definición de probabilidad condicionada. Aplicando de forma sucesiva obtenemos la siguiente descomposición:
+    \begin{equation}
+        P(X^{(1)}, X^{(2)}, \ldots, X^{(n)}) = P(X^{(1)}) \prod_{i=2}^n P(X^{(i)}|X^{(1)}, \ldots, X^{(i-1)}).
+    \end{equation}
+\end{proof}
+
+Otro concepto básico es el concepto de independencia entre dos \ac{v.a.}.
+\begin{definition}
+    Dadas dos \ac{v.a.} $X$ e $Y$, diremos que son \textbf{independientes} si la distribución de probabilidad conjunta se puede descomponer como el producto de de las probabilidades de cada variable. Esto es,
+    \begin{equation}
+        P(X=x, Y=y)=P(X=x)P(Y=y)\ \ \forall x \in X, y \in Y.
+    \end{equation}
+\end{definition}
+
+Diremos que un conjunto de \ac{v.a.} son independientes cuando las variables lo son dos a dos.
+
+De cara a los próximos estudios estadísticos y probabilísticos de la muestra de una \ac{v.a.} nos van a resultar necesarias las siguientes medidas:
+\begin{itemize}
+    \item \textbf{Esperanza matemática}: se define la esperanza matemática de una función $f$ sobre una distribución de probabilidad $P(X)$ como el valor medio que toma $f$ cuando la \ac{v.a.} $X$ sigue la distribución P. Dicho de manera formal:
+    
+    \begin{definition}
+        Se define la \textbf{esperanza matemática} en el caso discreto como
+        \begin{equation}
+            E[f(X)]=\sum_X P(X)f(X).
+        \end{equation}
+    \end{definition}
+    
+    \begin{definition}
+        Se define la \textbf{esperanza matemática} en el caso continuo como
+        \begin{equation}
+            E[f(X)]=\int_X P(x)f(x)dx.
+        \end{equation}
+    \end{definition}
+
+    \item \textbf{Varianza}: nos da una medida de la dispersión de los datos. Formalmente se puede definir de la siguiente manera:
+    \begin{definition}
+        Se define la \textbf{varianza} de una \ac{v.a.} como
+        \begin{equation}
+            Var(f(X)) = E[(f(X) - E[f(X)])^2].
+        \end{equation}
+        Dado que la varianza se define como la esperanza matemática del cuadrado de una función es directo ver que por definición la varianza siempre será no negativa.
+    \end{definition}
+
+    \item \textbf{Covarianza}: nos da una medida sobre cómo de relacionadas están dos \ac{v.a.} de forma lineal. Formalmente se puede definir de la siguiente manera.
+    \begin{definition}
+        Se define la \textbf{covarianza} entre una función $f(X)$ y una función $g(Y)$ con respecto a una distribución de probabilidad $P$ como
+        \begin{equation}
+            Cov(f(X), g(Y))=E[(f(X) - E[f(X)])(g(Y) - E[g(Y)])].
+        \end{equation}
+    \end{definition}
+
+    A partir de esta definición, cuando tenemos un vector aleatorio $X \in \mathbb{R}$ definimos la \textbf{matriz de covarianzas} cómo la matriz $n \times n$ que satisface que
+    \begin{equation}
+        Cov(X)_{i, j} = Cov(X^{(i)}, X^{(j)}).
+    \end{equation}
+
+    Claramente esta matriz es simétrica y su diagonal está compuesta por las varianzas de las componentes del vector aleatorio.
+\end{itemize}
+
+\section{Probabilidad Bayesiana}
+En ocasiones, dadas dos variables aleatorias $X$ e $Y$, nos vemos en el caso de conocer $P(Y | X)$ y queremos conocer $P(X | Y)$.
+
+A esta última probabilidad se le conoce como probabilidad posterior y a su estudio se le conoce cómo Probabilidad Bayesiana Objetiva, la cuál es de gran importancia pues una gran cantidad de procedimientos de \ac{AA} se basan en ella~\cite{gelman-2004}.
+
+Para comenzar a desarrollar esta teoría comenzaremos enunciando el famoso \textbf{Teorema de Bayes}, que es el principio de la teoría y que nos permite calculas la probabilidad posterior deseada conociendo $P(X)$ de la siguiente forma.
+\begin{theorem}
+    \textbf{Teorema de Bayes}: dadas $X$ e $Y$ dos variables aleatorias, se cumple la siguiente igualdad:
+    \begin{equation}
+        P(X | Y) = \frac{P(Y | X)P(X)}{P(Y)}.
+    \end{equation}
+\end{theorem}
+
+Este teorema nos resultará de gran utilidad en la conocida inferencia Bayesiana, de la cuál se hace uso en \textit{deep learning}.
+
+\section{Teoría de la Información}
+La teoría de la información es una rama de las matemáticas aplicadas que gira entorno cuantificar cuanta información contiene una señal. Originalmente fue inventada para estudiar cómo mandar mensajes sobre un canal ruidoso, tales como una transmisión por radio. Esta rama cuenta con numerosas aplicaciones en la ingeniería informática, sin embargo nosotros nos centraremos en su aplicación para caracterizar distribuciones de probabilidad o para cuantificar la similitud entre estas.
+
+\begin{definition}
+    Se define el concepto de \textbf{autoinformación} de un suceso o evento $X=x$ siendo $X$ una \ac{v.a.} bajo una cierta distribución de probabilidad $P$ como
+    \begin{equation}
+        I(x) = -\log P(x).
+    \end{equation}
+\end{definition}
+
+Si nos fijamos, esta definición se centra en trabajar con un único resultado. Con el fin de extender este concepto introducimos la conocida \textbf{entropía de Shannon}.
+
+\begin{definition}
+    Definimos la \textbf{entropía de Shannon} para medir la incertidumbre en toda la distribución de probabilidad como
+    \begin{equation}
+        H(X)=E[I(X)]=-E[\log P(X)] = H(P).
+    \end{equation}
+    En el caso de que la distribución de nuestra \ac{v.a.} $X$ sea continua, la entropía de Shannon recibirá el nombre de \textbf{entropía diferencial}.
+\end{definition}
+
+En el caso de que tengamos dos distribuciones de probabilidad diferentes, $P(X)$ y $Q(X)$, sobre la misma \ac{v.a.} $X$, podemos medir cómo de distintas son estas dos distribuciones usando la divergencia de Kullback-Leibler.
+
+\begin{definition}
+    En el contexto anterior, se define la \textbf{divergencia de Kullback-Leibler (divergencia KL)} como
+    \begin{equation}
+        D_{KL}(P || Q) = E[\log \frac{P(x)}{Q(x)}] = E[\log P(x) - \log Q(x)].
+    \end{equation}
+\end{definition}
+
+Esta medida se puede simplificar mediante la siguiente medida.
+
+\begin{definition}
+    En el contexto anterior, se define la \textbf{entropía cruzada} como
+    \begin{equation}
+        H(P, Q) = - E_{X \sim P} [\log Q(X)].
+    \end{equation}
+\end{definition}
+
+\begin{proposition}
+    Otra definición alternativa de la entropía cruzada es
+    \begin{equation}
+        H(P, Q) = H(P) + D_{KL}(P || Q).
+    \end{equation}
+\end{proposition}
+
+Esta nueva noción es interesante pues minimizar la entropía cruzada respecto a la distribución $Q$ es equivalente a minimizar la divergencia KL, dado que $Q$ no participa en el término omitido.
+
+\section{Estimación de Máxima Verosimilitud}
+Durante el estudio de los experimentos aleatorios~\cite{garthwaite-2002}, muchas veces querremos obtener conclusiones acerca del comportamiento de una o varias varías características de nuestra población basándonos en la observación de las mismas en un subconjunto de la población original. La inferencia estadística se centra en resolver este tipo de problemas.
+
+En todo problema de inferencia estadística existen usa serie de elementos base del problema:
+\begin{itemize}
+    \item \textbf{La población}: es el conjunto de elementos en el que se pretende estudiar una determinada característica.
+    \item \textbf{La característica que se desea estudiar}: se suele representar por la \ac{v.a.} que la cuantifica.
+    \item \textbf{La muestra de la que se dispone para el estudio}: es un subconjunto de la población sobre el que se va a estudiar la característica para inferir las conclusiones.
+\end{itemize}
+
+Normalmente basándonos en la muestra observada intentaremos descubrir la distribución desconocida $F$ de la \ac{v.a.} involucrada en el problema. A $F$ se le conocerá por el nombre de \textbf{distribución teórica}. Según el conocimiento previo que se tenga sobre la distribución teórica se pueden plantear dos situaciones:
+
+\begin{enumerate}
+    \item Se conoce la forma de la función de distribución teórica salvo uno o varios parámetros, es decir, se sabe que $F$ pertenece a la familia de funciones de distribuciones
+    \begin{equation}
+        F \in \{ F_\theta, \theta \in \Theta \},
+    \end{equation}
+    donde $F_\theta$ tiene una forma funcional fija y conocida dependiente de uno o varios parámetros $\theta$, que se mueve dentro de $\Theta \subset \mathbb{R}^k$ conocido como espacio paramétrico. A este caso se le conoce como \textbf{inferencia paramétrica}.
+    \item No se conoce nada acerca de $F$ salvo aspectos muy generales como que la \ac{v.a.} sea discreta o continua, la existencia o no existencia de momentos o aspectos similares. A este caso se le conoce como\textbf{inferencia no paramétrica}.
+\end{enumerate}
+
+Nosotros, de cara a las futuras aplicaciones en \ac{AA} nos centraremos en el primer caso, en la \textbf{inferencia paramétrica}. Además nos centraremos en la estimación puntual, es decir, buscar valores concretos $\theta$ dentro de nuestro espacio paramétrico $\Theta$.
+
+Primero hablaremos de la muestra que queremos estudiar y le aplicaremos algunas restricciones que nos harán más cómodo trabajar con ella.
+
+\begin{definition}
+    Definimos una \textbf{muestra aleatoria simple}, de tamaño $n$, de una \ac{v.a.} $X$ con distribución teórica $F$, como un vector $(X_1, \ldots, X_n)$ formado por $n$ \ac{v.a.} \ac{i.i.d.}, es decir, con función de distribución común $F$.
+\end{definition}
+
+La ventaja de trabajar con \ac{v.a.} \ac{i.i.d.} es que la función de distribución conjunta del vector aleatorio formado por dichas variables será igual al producto de la distribuciones marginales de cada una de ellas, que al tener la misma distribución se tiene que
+\begin{equation}
+    F_{(X_1, \ldots, X_n)}(x_1, \ldots, x_n) = F_{X_1}(x_1)\ldots F_{X_n}(x_n) = \prod_{i=1}^n F_X(x_i), \quad (x_1, \ldots, x_n) \in \mathbb{R}^n.
+\end{equation}
+
+\begin{definition}
+    Definimos el concepto de \textbf{estimador}, $T(X_1, \ldots, X_n)$ cómo una función que toma la muestra y devuelve valores del espacio paramétrico, es decir,
+    \begin{equation}
+        T: X^n \to \Theta.
+    \end{equation}
+\end{definition}
+
+\begin{definition}
+    Un estimador $T(X_1, \ldots, X_n)$ de $\theta$ se dice insesgado o centrado en el parámetro $\theta$ si
+    \begin{equation}
+         E_\theta[T(X_1, \ldots, X_n)] = \theta , \quad \forall \theta \in \Theta.
+    \end{equation}
+\end{definition}
+
+Nuestro objetivo será encontrar un estimador con propiedades suficientemente buenas. Como vemos la definición anterior no plantea apenas ninguna condición para que una función sea un estimador, es por tanto que debemos de imponer restricciones a este. Para ello daremos la noción de función de verosimilitud.
+
+\begin{definition}
+    Sea $X$ una \ac{v.a.} con distribución en una familia paramétrica de distribuciones $\{ F_\theta, \theta \in \Theta \}$. Sea $f_\theta(x)$ la \ac{f.m.p.} o la \ac{f.d.p.} de $X$. Sea $X_1, \ldots, X_n$ una muestra aleatoria simple de $X$ y $f^n_\theta(x_1, \ldots, x_n)$ su \ac{f.m.p.} o \ac{f.d.p.} conjunta con $\theta \in \Theta$. Para cada realización muestral se define la  \textbf{función de verosimilitud} asociada a dichos valores de la muestra como una función de $\theta$ de la siguiente forma:
+    \begin{equation}
+        L_{x_1, \ldots, x_n}: \Theta \to \mathbb{R}^+ \cup \{0\} 
+    \end{equation}
+    \begin{equation}
+        L_{x_1, \ldots, x_n}(\theta) =  f_\theta^n(x_1, \ldots, x_n).
+    \end{equation}
+\end{definition}
+
+\begin{definition}
+    En las condiciones de la definición previa, se define el \textbf{estimador de máxima verosimilitud} de $\theta$ como aquel estimador $\hat{\theta}(X_1, \ldots, X_n)$ que verifica que
+    \begin{equation}
+        \forall (x_1, \ldots, x_n) \in X^n, \quad L_{x_1, \ldots, x_n}(\hat{\theta}(x_1, \ldots, x_n))= \max_{\theta \in \Theta}L_{x_1, \ldots, x_n}(\theta).
+    \end{equation}
+\end{definition}
+
+Podemos ver este este estimador de manera intuitiva como aquel estimador que, dada una muestra, nos da el parámetro $\theta$ que hace que sea más probable observar los datos de la muestra. Además este estimador es muy interesante porque cuenta con muy buenas propiedades, veamos algunas de ellas.
+
+\begin{proposition}
+    Bajo condiciones bastantes generales, si las ecuaciones de verosimilitud tienen solución única, $\hat{\theta}(X_1, \ldots, X_n)$, esta solución es fuertemente consistente, es decir, cuando la muestra tiende a infinito, el estimador converge al parámetro de forma casi segura.
+    \begin{equation}
+        \hat{\theta}(X_1, \ldots, X_n) \xrightarrow[n \to \infty]{c.s.} \theta, \quad \forall \theta \in \Theta
+    \end{equation}
+\end{proposition}
+
+\begin{theorem}
+    \textbf{Teorema de invarianza de Zehna}: sea $X$ una \ac{v.a.} con distribución en una familia paramétrica de distribuciones $\{F_\theta, \theta \in \Theta \}$. Sea $X_1, \ldots, X_n$ una muestra aleatoria simple de $X$. Sea $g$ una función medible. Si $\hat{\theta}(X_1, \ldots, X_n)$ es el estimador de máximo verosimilitud de $\theta$, entonces $g(\hat{\theta}(X_1, \ldots, X_n))$ lo será de $g(\theta)$.
+\end{theorem}
+Estas propiedades harán del estimador de máximo verosimilitud uno muy deseable a calcular. Es bastante común en el \textit{deep learning} desear minimizar la función negativa de la función de verosimilitud o la entropía cruzada con el fin de encontrar los pesos (o en este caso los parámetros) de nuestro modelo. Esto implica un problema de minimización, por lo que estudiaremos métodos para ello a continuación.

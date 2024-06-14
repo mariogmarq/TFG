@@ -1,0 +1,33 @@
+\begin{center}
+\resizebox{0.5\textwidth}{!}{\begin{tikzpicture}[mindmap,
+  level 1 concept/.append style={level distance=130,sibling angle=30},
+  extra concept/.append style={color=blue!50,text=black}]
+
+    \definecolor{rojo_pastel}{HTML}{FFABAB}
+    \definecolor{azul_pastel}{HTML}{6EB5FF}
+    \definecolor{verde_pastel}{HTML}{ADCFA3}
+
+
+  % Applied area: computer science and its subfields
+ 
+  \begin{scope}[mindmap, concept color=rojo_pastel, text=white]
+    \node [concept] (root) at (0, 0) {\textbf{Adversarial attacks in FL}};
+  \end{scope}
+
+  % Applied area: theoretical physics and its subfields
+
+  \begin{scope}[mindmap, concept color=azul_pastel, text=white]
+    \node [concept] (property) at (-5, -5) {Attacks to the federated model};
+  \end{scope}
+  
+  
+  \begin{scope}[mindmap, concept color=verde_pastel, text=white]
+    \node [concept] (feature) at (5, -5) {Privacy attacks};
+  \end{scope}
+  
+  
+    \path (root) to[circle connection bar switch color=from (rojo_pastel) to (azul_pastel)] (property);
+    \path (root) to[circle connection bar switch color=from (rojo_pastel) to (verde_pastel)] (feature);
+
+\end{tikzpicture}}
+\end{center}

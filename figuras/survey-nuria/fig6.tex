@@ -1,0 +1,37 @@
+\begin{center}
+\resizebox{0.8\textwidth}{!}{\begin{tikzpicture}[mindmap,
+  level 1 concept/.append style={level distance=130,sibling angle=30},
+  extra concept/.append style={color=blue!50,text=black}]
+
+    \definecolor{rojo_pastel}{HTML}{FFABAB}
+    \definecolor{azul_pastel}{HTML}{6EB5FF}
+    \definecolor{verde_pastel}{HTML}{ADCFA3}
+    \definecolor{morado_pastel}{HTML}{CAA7BD}
+
+  \begin{scope}[mindmap, concept color=rojo_pastel, text=white]
+    \node [concept] (root) at (0, 0) {\textbf{Poisoning attacks}};
+  \end{scope}
+
+  % Applied area: theoretical physics and its subfields
+
+  \begin{scope}[mindmap, concept color=azul_pastel,text=white]
+    \node [concept] (property) at (-5, -5) {Data-poisoning attacks}
+        child [grow=135, level distance=120] {node [concept] (ind) {Label-flipping}}
+        child [grow=180, level distance=120] {node [concept] (population) {Poisoning samples}}
+        child [grow=225, level distance=120] {node [concept] (out-of) {Out-of-distribution}};
+  \end{scope}
+  
+  
+  \begin{scope}[mindmap, concept color=verde_pastel,text=white]
+    \node [concept] (feature) at (5, -5) {Model-poisoning attacks}
+        child [grow=45, level distance=120] {node [concept] (ind) {Random weights}}
+        child [grow=0, level distance=120] {node [concept] (population) {Optimisation methods}}
+        child [grow=-45, level distance=120] {node [concept] (out-of) {Information Leakage}};
+  \end{scope}
+  
+  
+    \path (root) to[circle connection bar switch color=from (rojo_pastel) to (azul_pastel)] (property);
+    \path (root) to[circle connection bar switch color=from (rojo_pastel) to (verde_pastel)] (feature);
+
+\end{tikzpicture}}
+\end{center}

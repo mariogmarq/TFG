@@ -1,0 +1,37 @@
+\chapter{Conclusiones}\label{sec:conclusiones}
+
+En este capítulo se resumen las conclusiones principales del trabajo. Algunas de ellas darán lugar a posibles líneas de desarrollo de trabajo futuro.
+
+En el contexto de los sistemas de \ac{IA}, la seguridad y la privacidad son aspectos fundamentales que no pueden ser subestimados. La creciente preocupación popular debido al creciente uso de estos sistemas ha llevado a la aparición del concepto de sistemas de \textit{Trustworthy AI} y  \textit{High-Risk AI Systems} por parte de organismos como la Unión Europea. Estos requisitos nos llevan a investigar maneras de garantizar la fiabilidad de los sistemas. Usualmente, aquellos sistemas de \ac{IA} que utilizan \ac{FL} manejan datos sensibles que, si no se protegen adecuadamente, pueden ser vulnerables a una variedad de ataques, incluyendo la filtración de datos privados y la manipulación maliciosa del modelo.
+
+Es por ello que durante este trabajo nos hemos centrado en estudiar cómo la tecnología \textit{blockchain} puede ayudarnos a proteger un esquema federado. Se exponen a continuación los resultados observados:
+\begin{itemize}
+    \item Se ha observado cómo la combinación de las tecnologías \textit{blockchain} y \ac{FL} ayudan a resolver muchos problemas presentes en el paradigma de aprendizaje actual. Aunque hayamos hecho hincapié en aquellos relacionados con la seguridad del modelo, hemos visto también cómo el uso de la \textit{blockchain} ayuda a tener una mejor escalabilidad de la red o a no depender de una entidad central entre otros beneficios. Esto demuestra el enorme potencial que tiene aún por explotar este campo en el que no existe un estándar claro y está lleno de constantes innovaciones y propuestas.
+    
+    \item Los experimentos avalan la hipótesis planteada de que \ac{PoFL} resulta ser un mecanismo de defensa viable contra ataques al modelo en el escenario en el que haya menos clientes bizantinos que mineros. Esta conclusión puede resultar sorprendente pues \ac{PoFL} fue concebido originalmente como un método de consenso para resolver el problema de la eficiencia energética de la \textit{blockchain}, por lo que esta resistencia resulta un efecto secundario del diseño del método.
+    
+    \item Nuestra propuesta \ac{KFC}, basada en la combinación de \ac{PoFL} con un agregador más robusto, demuestra ser una defensa sólida contra los ataques al modelo en escenarios más difíciles donde el número de atacantes es igual o mayor al de mineros. Además, al basarse en \ac{PoFL}, sigue manteniendo el diseño centrado en la eficiencia energética, algo clave para cualquier arquitectura de \textit{blockchain} que se quiera aplicar en la realidad. Por lo tanto, se puede considerar una mejora considerable sobre \ac{PoFL} y una gran opción para integrar \textit{blockchain} y \ac{FL}.
+
+    % Parrafito en el que hables de que la experimentación realizada es grande y por eso las conclusiones obtenidas son válidas?
+    \item Durante la experimentación realizada se han considerado múltiples modelos de \ac{AA} de distinta complejidad y en múltiples conjuntos de datos con tamaño y características variadas. Es por ello y por la consistencia de los resultados en las distintas configuraciones por lo que se puede afirmar que las conclusiones extraídas de esta experimentación son robustas y generalizables a otros entornos federados.
+    
+\end{itemize}
+
+
+
+Estas observaciones nos muestran cómo la incorporación de la tecnología \textit{blockchain} puede ofrecer una capa adicional de seguridad mediante la descentralización y la inmutabilidad de los datos, lo que reduce el riesgo de manipulación y aumenta la transparencia. Sin embargo, la tecnología \textit{blockchain} por sí sola no es suficiente para garantizar una protección completa. Por ello es crucial implementar mecanismos adicionales, como métodos robustos de agregación y algoritmos de consenso seguros, para defenderse contra ataques sofisticados y garantizar la integridad y confidencialidad de los datos y el modelo. Un ejemplo de estos mecanismos adicionales es nuestra propuesta \ac{KFC}.
+
+Estos resultados obtenidos son prometedores y novedosos. Es por ello, que se ha elaborado un artículo científico y ha sido presentado al congreso \textit{European Conference on Artificial Intelligence}\footnote{\url{https://www.ecai2024.eu/}} recopilando los experimentos y resultados expuestos en esta memoria. %También cabe destacar que en esta memoria, si bien se han tratado los ataques al modelo, estos no son todos los posibles ataques presentes en los esquemas federados.
+
+
+\chapter{Trabajo futuro}
+
+El trabajo realizado, al estar en un área en auge y tratar con un problema realmente importante (la privacidad de los datos en \ac{IA}), tiene un amplio recorrido. A continuación planteamos el posible trabajo a realizar a raíz de las conclusiones extraídas de esta memoria:
+
+\begin{itemize}
+    \item Con el fin de solventar el problema presente de \ac{PoFL}, que radica en una falta de protección dentro de una \textit{pool}, hemos decidido usar Krum. Sin embargo, como hemos visto este no es el único mecanismo posible para agregar esta capa adicional de seguridad. Por lo tanto, se pueden realizar variaciones de \ac{KFC} donde se usen mecanismos alternativos a Krum.
+    \item Los ataques al modelo probados han sido los ataques bizantinos y los de \textit{backdoor}. Sin embargo, existe una mayor variedad de ataques al modelo que no han sido probados en esta memoria, como por ejemplo aquellos ataques realizados durante la inferencia del modelo.
+    \item Una línea futura de trabajo es ver cómo la \textit{blockchain} puede ayudar a mitigar ataques de privacidad a los datos en un esquema federado. Estos ataques constituyen un gran interés pues están directamente vinculados con el problema de la privacidad. Se podría tomar como base los resultados encontrados en esta memoria con el fin de construir, deseablemente, una defensa conjunta frente ataques a la privacidad de los datos y la integridad al modelo federado, el cual es uno de los mayores retos que existen a día de hoy en el paradigma del \ac{FL}.
+\end{itemize}
+
+En conclusión, este trabajo profundiza en el estado actual de la aplicabilidad de \textit{blockchain} y \ac{FL} ofreciendo una solución novedosa a uno de los principales problemas actuales. Es por ello que este problema puede causar un gran impacto ya sea ofreciendo arquitecturas más seguras en entornos en los que ya se aplica la combinación nombrada o abriendo paso a futuras investigaciones que sigan la línea aquí planteada.

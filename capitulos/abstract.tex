@@ -1,0 +1,40 @@
+\chapter*{Abstract}
+This study aims to examine the integration of blockchain technologies with Federated Learning (FL), emphasizing the potential of this combination to protect federated frameworks from adversarial attacks. Initially, the context of the problem is introduced.
+
+\section*{Trustworthy AI}
+Artificial Intelligence (AI) systems have become an integral part of daily life, often operating unobtrusively. From recommendation systems to Instagram filters, AI significantly influences various aspects of human existence. Recently, the rising prominence of systems such as ChatGPT and autonomous vehicles has sparked widespread concern regarding their security and potential negative impacts on sectors such as healthcare, education, culture, and democracy. In response to these concerns, the concept of Trustworthy AI systems has emerged, founded on several technical requirements.
+
+\section*{Federated Learning}
+A critical technical requirement for Trustworthy AI is security and data governance, which has led to the development of Federated Learning (FL). FL is an innovative architecture that enables collaborative model training across decentralized devices while maintaining data privacy. Despite its advantages, the decentralized nature of FL can be a vulnerability. Since data remains in the nodes, traditional data exploration techniques cannot be employed, rendering the framework susceptible to data poisoning attacks.
+
+\section*{Blockchain Applied to Federated Learning}
+Blockchain technologies have gained substantial popularity in recent years, partly due to the success of innovations like Bitcoin. The integration of blockchain into FL has emerged as a promising solution to enhance its security and integrity. By leveraging the immutable and transparent nature of blockchain, FL systems can establish a tamper-resistant record of model updates and participant contributions, thereby mitigating the risks of data manipulation and unauthorized access.
+
+\section*{Mathematical Foundation}
+To fully comprehend blockchain technology and machine learning, it is essential to delve into the key mathematical concepts underlying these topics.
+
+This foundational chapter begins with an introduction to basic linear algebra, which is a critical component for understanding machine learning models. Subsequently, we explore probability, inference, and information theory. Here, we introduce the fundamental concepts of probability theory, including random variables, probability distributions, and conditional probability. The discussion then progresses to parameter estimation and maximum likelihood estimation, as machine learning models are frequently optimized using these estimators.
+
+Further, the chapter addresses nonlinear optimization, outlining the essential conditions of this theory and explaining the gradient descent method for unconstrained optimization, which is fundamental for optimizing machine learning models. Lastly, we examine the Krum aggregation operator, which provides a robust algorithm for aggregating gradient estimates, ensuring resilience against outliers.
+
+In addition, we address general deep learning algorithms by introducing neural networks from a theoretical perspective. We define the general structure of a neural network, followed by a discussion on the loss function based on cross-entropy. We then define output units and present specific examples such as sigmoidal units. This is followed by an introduction to hidden units, in a manner similar to our treatment of output units.
+
+After establishing a background in general neural networks, we focus on convolutional neural networks (CNNs) and the classification problem. We define the convolution operation, which plays a crucial role in CNN architecture. Finally, we introduce the notion of the EfficientNet architecture, which will be employed during the experiments in this study.
+
+\section*{Blockchain and Federated Learning}
+The following chapters provide a formal exposition of FL. We begin by defining an FL system and presenting a taxonomy of the various types of attacks to which FL is vulnerable. We delve deeper into attacks that specifically target the federated model, as well as some current defenses against these attacks that have been explored in the literature.
+
+Next, we explain blockchain systems, detailing their main components and how they can be utilized to preserve trust and privacy throughout the entire system. We then elucidate the consensus mechanisms that enable blockchain systems to make decisions while maintaining a decentralized structure.
+
+Finally, we explore the combination of FL and blockchain, illustrating the current state of this paradigm. We discuss successful applications of this technological integration and examine the different consensus mechanisms and architectures that have been proposed to achieve the proper integration of both technologies.
+
+\section*{Krum Federated Chain}
+Having established the core concepts, the subsequent chapters are dedicated to our proposed framework. We begin by hypothesizing that Proof Of Federated Learning (PoFL), a consensus mechanism specifically designed for FL, can, under certain circumstances, serve as a valid defense against adversarial attacks, even though this was not its original purpose.
+
+Inspired by its disadvantages, we then propose Krum Federated Chain (KFC), a novel blockchain architecture applied to FL. This architecture leverages the PoFL consensus mechanism and the Krum aggregation operator to address more complex scenarios where our initial hypothesis does not hold.
+
+Following this, we detail the experimental setup in which multiple image classification models are trained using KFC, along with some standard architectures from the literature, to validate our proposal. We analyze the results, demonstrating how KFC provides a robust defense against adversarial attacks in federated frameworks, even in cases where PoFL alone does not suffice, thereby establishing KFC as a viable architecture for integrating blockchain and FL.
+
+Finally, we present the conclusions of this study and propose potential directions for future research.
+
+\textbf{Keywords}: federated learning, neuronal networks, adversarial attacks, blockchain, image classification, machine learning, non linear optimization.

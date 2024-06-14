@@ -1,0 +1,247 @@
+\chapter{Optimización No Lineal}\label{sec:optim}
+Gran parte de los problemas de \ac{AA} consisten en minimizar una función de pérdida respecto a una serie de parámetros. En este capítulo estudiaremos algunas técnicas para resolver problemas de optimización no restringida en dimensión finita~\cite{Luenberger-1969, Spelluci-1993, polyak-1987}. Empezaremos formulando el problema. 
+
+Dada una función $f: \mathcal{D} \subset \mathbb{R}^n \to \mathbb{R}$; $f \in C^1(\mathcal{D})$ y $\mathcal{D}$ abierto, buscamos un mínimo (local) $x^*$ de $f$. Escribiremos este problema cómo:
+\begin{equation}\label{minization}
+    \min_{x \in \mathcal{D}}f(x).
+\end{equation}
+\begin{definition}
+    Un elemento $x^*$ se dirá que es un mínimo local de $f$ si existe $\delta > 0$ tal que $f(x^*) \le f(x)$ para todo $x$ que cumpla que $||x^* - x||< \delta$.
+\end{definition}
+
+La existencia de la solución solo se puede garantizar bajo ciertas condiciones (como contraejemplo bastaría con considerar $n=1$, $f(x)=e^{x}$). Para ello primero debemos hablar de diferenciación de funciones. 
+\begin{definition}
+    Diremos que una función $f: \mathbb{R}^n \to \mathbb{R}$ es diferenciable en un punto $x$ si podemos encontrar un vector $a \in \mathbb{R}^n$ tal que para todo $y \in \mathbb{R}^n$,
+    \begin{equation}
+         f(x + y) = f(x) + <a, y> + o(y) 
+    \end{equation}
+    donde $<a,y>$ denota el producto escalar entre $a$ y $y$ . El vector $a$ es conocido como el gradiente de $f(x)$ en $x$ y se denota por $\nabla f(x)$.
+\end{definition}
+En otras palabras, una función es diferenciable en un punto $x$ si admite una aproximación lineal de primer orden en $x$. Hemos usado la notación $o$ pequeña que denota que la función $o$ es mucho más pequeña que $y$ cuando $y \to 0$. Esta definición se usa en lugar de usar un límite con el fin de dar una mayor intuición geométrica.
+
+Está claro que el gradiente está únicamente determinado siendo sus componentes
+\begin{equation}
+     \nabla f_i(x) = \frac{\partial f(x)}{\partial x_i}.
+\end{equation}
+
+Supongamos que $f(x)$ es diferenciable en el segmento $[x, x+y]$. Consideramos entonces la función de una variable $\phi(t) = f(x + ty)$ y calculamos su derivada para $0 \le t \le 1$.
+\begin{equation}
+    \frac{\phi(t+ \varepsilon) - \phi(t)}{\varepsilon} = \frac{f(x + (t + \varepsilon)y) - f(x+ty)}{\epsilon},
+\end{equation}
+\begin{equation}
+    = \frac{<\nabla f(x + ty), \varepsilon y> + o(\varepsilon y)}{\varepsilon}
+\end{equation}
+\begin{equation}\label{eq:gateaux}
+    \phi'(t) = \lim_{\varepsilon \to 0} \frac{\phi(t+ \varepsilon) - \phi(t)}{\varepsilon} = <\nabla f(x + t y), y>
+\end{equation}
+
+\begin{definition}
+    A la cantidad
+    $$ f'(x; y) = \lim_{\varepsilon \to 0} \frac{f(x + \varepsilon y) - f(x)}{\varepsilon}$$
+    se le llama derivada direccional de $f(x)$ en la dirección de $y$. Si $f(x)$ tiene derivada direccional en todas las direcciones entonces se dice que $f(x)$ es diferenciable Gateaux en el punto $x$.
+\end{definition}
+    
+    Se deduce de la ecuación \ref{eq:gateaux} que si $f(x)$ es diferenciable en $x$, también es diferenciable Gateaux, con
+\begin{equation}\label{eq:gateauxEnX}
+    f'(x;y)=\phi'(0)=<\nabla f(x), y>.
+\end{equation}
+
+Además, si una función $f(x)$ es diferenciable en $[x, x+y]$, entonces, usando la ecuación \ref{eq:gateaux} y la igualdad:
+\begin{equation}
+    \phi(1) = \phi(0) + \int_0^1 \phi'(t)dt
+\end{equation}
+obtenemos que
+\begin{equation}\label{eq:integralderivative}
+    \begin{split}
+    f(x + y) = f(x) + \int_0^1 <\nabla f(x + ty), y>dt \\
+    = f(x) + <\nabla f(x), y> + \int_0^1 <\nabla f(x + ty) - \nabla f(x), y>dt.
+    \end{split}
+\end{equation}
+
+\begin{definition}
+    Diremos que una función $f(x)$ en $\mathcal{R}^n$ es doblemente diferenciable en un punto $x$ si es diferenciable en $x$ y si podemos encontrar una matríz simétrica $H$ de tamaño $n \times n$ tal que para todo $y \in \mathcal{R}^n$ se cumple que 
+    \begin{equation}
+        f(x+y) = f(x) + \langle \nabla f(x), y \rangle + \frac{\langle Hy, y \rangle}{2} + o(||y||^2).
+    \end{equation}
+\end{definition}
+
+Esta matriz $H$ se conoce como Hessiana y se denotará por $\nabla^2f(x)$ o $f''(t)$. En otras palabras, una función es doblemente diferenciable en un punto $x$ si admite una aproximación cuadrática en un entorno de $x$.
+
+Consideramos de nuevo la función escalar $\phi(t)=f(x + ty)$. Asumimos que $f$ es doblemente derivable. Procediendo de igual manera que en el caso anterior, se puede ver que
+\begin{equation}
+    \phi''(t) = \langle \nabla^2f(x+ty)y, y\rangle.
+\end{equation}
+
+Por lo tanto, si usamos la formula de Taylor expresando el resto en la forma de Lagrange tenemos que
+\begin{equation}
+    \phi(1) = \phi(0) + \phi'(0) + \frac{\phi''(\xi)}{2}, \quad 0 \le \xi \le 1
+\end{equation}
+
+y por tanto podemos encontrar un $\xi$ tal que
+\begin{equation}
+    f(x+y) = f(x) + \langle \nabla f(x), y \rangle + \frac{\langle \nabla^2f(x + \xi y)y, y\rangle}{2}.
+\end{equation}
+Una vez conocidas las nociones anteriores, podemos afirmar que una \textbf{condición suficiente para la existencia} de al menos un mínimo local es la siguiente:
+
+\begin{proposition}
+    Si existe un $x^0 \in \mathcal{D}$ tal que $\mathcal{L}_f(x^0)= \{ x \in \mathcal{D}: f(x) \le f(x^0) \}$ es compacto, (es decir, cerrado y acotado pues nos encontramos en dimensión finita) entonces $f$ tiene un mínimo local $x^*$ .
+\end{proposition}
+
+\begin{proof}
+    Es consecuencia directa de la compacidad del conjunto $\mathcal{L}_f(x^0)$.
+\end{proof}
+
+Daremos también una \textbf{condición necesaria} para que un punto sea un mínimo local.
+
+\begin{theorem}\label{firstordercond}
+    Si $f$ es continuamente diferenciable en un entorno de $x^*$ y $x^*$ es un mínimo local de $f$, entonces $\nabla f(x^*) = 0$.
+\end{theorem}
+
+\begin{proof}
+    Supongamos que $\nabla f(x^*) \ne 0$. Entonces podemos encontrar $\varepsilon >0$ lo suficientemente pequeño tal que
+    \begin{equation}
+    \begin{split}
+        f(x^* - \varepsilon \nabla f(x^*)) = f(x^*) - \varepsilon ||\nabla f(x^*)||^2 + o(\varepsilon \nabla f(x^*)) \\
+        = f(x^*) - \varepsilon (||\nabla f(x^*)||^2 + \varepsilon^{-1} o(\varepsilon)) < f(x^*).
+    \end{split}
+    \end{equation}
+    Pero esto es una contradicción que $x^*$ sea un mínimo local.
+\end{proof}
+
+\begin{theorem}\label{firstsecondordercond}
+    Sea  $f: \mathcal{D} \subset \mathbb{R}^n \to \mathbb{R}$; $f \in C^1(\mathcal{D})$, $\mathcal{D}$ abierto y $x^* \in \mathcal{D}$. Supongamos que $x^*$ es un mínimo local de $f$, entonces se cumple que
+    \begin{equation}
+        \nabla f(x^*) = 0.
+    \end{equation}
+     Además, si $f \in C^2(\mathcal{D})$, entonces lo siguiente también se cumple $\nabla^2 f(x^*)$ es semidefinida positiva.
+\end{theorem}
+
+\begin{proof}
+    Por el teorema \ref{firstordercond}, $\nabla f(x^*)=0$ y por lo tanto para un $y$ arbitrario y un $\varepsilon$ lo suficientemente pequeño tenemos que:
+    \begin{equation}
+        f(x^*) \le f(x^* + \varepsilon y) = f(x^*) + \varepsilon^2 \frac{\langle \nabla^2 f(x^*)y, y \rangle}{2} + o(\varepsilon^2),
+    \end{equation}
+    \begin{equation}
+        \langle \nabla^2 f(x^*)y, y \rangle \ge o(\varepsilon^2)/\varepsilon^2
+    \end{equation}
+
+    Pasando al límite con $\varepsilon \to 0$, obtenemos que $\langle \nabla^2 f(x^*)y, y \rangle \ge 0$. Como $y$ es arbitrario, concluimos la prueba. 
+\end{proof}
+
+Nos interesará también conocer cuando nuestro mínimo local es también global, para ello daremos una condición suficiente basada en la convexidad de nuestro dominio y nuestra función.
+
+\begin{definition}
+    $\mathcal{D} \subset \mathbb{R}^n$ se dice \textbf{convexo}, si dados dos puntos $x, y \in \mathcal{D}$ entonces $\lambda x + (1 - \lambda)y \in \mathcal{D}, \lambda \in [0, 1]$.
+\end{definition}
+
+\begin{definition}
+    $f: \mathcal{D} \subset \mathbb{R}^n \to \mathcal{R}$, se dice \textbf{convexa} en $\mathcal{D}$ si dados $x, y \in \mathcal{D}$
+    \begin{equation}
+        \lambda f(x) + (1- \lambda)f(y) \ge f(\lambda x + (1-\lambda) y)
+    \end{equation}
+    con $\lambda \in [0, 1]$.
+\end{definition}
+
+\begin{theorem}
+    Si $\mathcal{D} \ne \emptyset \subset \mathbb{R}^n$ es convexo y $f$ es convexa en $\mathcal{D}$, entonces todo mínimo local es también un mínimo global.
+\end{theorem}
+
+\begin{proof}
+    Sea $x^*$ un mínimo local, entonces existe $\delta > 0$ tal que
+    \begin{equation}
+        || y - x^* || \le \delta \implies f(x^*) \le f(y).
+    \end{equation}
+
+    Supongamos $x \in \mathcal{D}$ arbitrario. Consideremos el punto $x^* + t(x - x^*) \in \mathcal{D}$ por ser convexo. Por ser $f$ convexa tenemos entonces que
+    \begin{equation}
+        f(x^* + t(x - x^*)) \le (1-t)f(x^*) + tf(x)
+    \end{equation}
+
+    Cogiendo un $t$ tal que $0 < t < \delta/(||x|| + ||x^*||)$ tenemos que
+    \begin{equation}
+        ||(x^* + t(x - x^*)) - x^*|| \le \delta.
+    \end{equation}
+
+    Por lo tanto
+    \begin{equation}
+        f(x^*) \le f(x^* + t(x - x^*)) \le (1-t)f(x^*) + tf(x).
+    \end{equation}
+
+    Operando tenemos que
+    \begin{equation}
+        f(x^*) + (t-1)f(x^*) \le tf(x)
+    \end{equation}
+    \begin{equation}
+        tf(x^*) \le tf(x) \implies f(x^*) \le f(x),
+    \end{equation}
+
+    donde $x$ era arbitrario llegando a nuestra conclusión.
+\end{proof}
+
+\section{Descenso por el Gradiente}
+Ahora vamos a analizar un método de optimización no restringida: el descenso por el gradiente. Este método, aunque raramente se implementa en su forma más pura, es un modelo para construir algoritmos más realistas, tales como el famoso descenso estocástico por el gradiente, el cual es el método por excelencia para optimizar funciones en el \ac{AA}. Daremos una prueba para su convergencia, y discutiremos los aspectos teóricos y los de implementación de estos métodos.
+
+Supongamos que para cualquier punto $x$, podemos calcular el gradiente de una función $\nabla f(x)$. En este caso, el método más simple para minimizar $f(x)$ es el método del descenso por el gradiente, en el que, comenzando en una aproximación inicial $x^0$, construimos una sucesión
+\begin{equation}\label{eq:gradientdescent}
+    x^{k+1}=x^k - \gamma_k \nabla f(x^k)
+\end{equation}
+donde el parámetro $\gamma_k \ge 0$ es el tamaño del paso. Existen varias maneras de deducir el método \ref{eq:gradientdescent}.
+
+Primero, si recordamos la condición necesaria de primer orden (Teorema \ref{firstordercond}) y su demostración, tenemos que si la condición no se cumple en $x$, es decir, $\nabla f(x) \ne 0$, entonces el valor de la función puede reducirse mediante el punto $x - \varepsilon \nabla f(x)$ con un valor de $\varepsilon$ lo suficientemente pequeño. Aplicando este procedimiento de manera secuencial, es como llegamos a este método.
+
+Segundo, en un punto $x^k$ la función diferenciable $f(x)$ puede ser aproximada por la función lineal $f_k(x)=f(x^k) + <\nabla f(x^k), x - x^k>$ en términos del orden de $o(x-x^k)$. Por lo tanto, podemos buscar el mínimo de la aproximación $f_k(x)$ en un entorno de $x^k$. Por lo tanto sería natural adoptar su solución como la nueva aproximación $x^{k+1}$. 
+
+Consideremos ahora la variante más sencilla de este método en la que $\gamma_k \equiv \gamma$:
+\begin{equation}
+    x^{k+1}=x^k - \gamma \nabla f(x^k).
+\end{equation}
+Queremos observar el comportamiento de este método bajo ciertas suposiciones sobre $f(x)$ y $\gamma$.
+
+\begin{theorem}
+    Sea $f(x)$ diferenciable en $\mathbb{R}^n$, y que el gradiente de $f(x)$ cumpla la condición de Lipschitz:
+    $$ || \nabla f(x) - \nabla f(y) || \le L ||x - y||$$
+    $f(x)$ esté acotada inferiormente:
+    $$ f(x) \ge f^* > - \infty $$
+    y que $\gamma$ cumpla que
+    $$0 < \gamma < 2/L $$.
+
+    Entonces, el método del gradiente tiende a cero:
+    $$ \lim_{k \to \infty}\nabla f(x^k) = 0 $$
+\end{theorem}
+
+\begin{proof}
+    Si sustituimos $x = x^k$ y $y = -\gamma \nabla f(x^k)$ en la ecuación \eqref{eq:integralderivative} y usamos la ecuación \eqref{eq:gateauxEnX} obtenemos que:
+    \begin{equation}
+    \begin{split}
+        f(x^{k+1})=f(x^k) - \gamma || \nabla f(x^k) ||^2 - \gamma \int_0^1 <\nabla f(x^k -t \gamma \nabla f(x^k)), \nabla f(x^k)>dt \\
+        \le f(x^k) - \gamma || \nabla f(x^k) ||^2 + L \gamma^2 || \nabla f(x^k) ||^2 \int_0^1 tdt \\
+        = f(x^k) - \gamma (1- \frac{1}{2}L \gamma)|| \nabla f(x^k) ||^2.
+    \end{split}
+    \end{equation}
+
+    Por lo tanto tenemos que:
+    \begin{equation}
+        f(x^{k+1}) \le f(x^k) - \gamma (1- \frac{1}{2}L \gamma)|| \nabla f(x^k) ||^2.
+    \end{equation}
+
+    Podemos sumar estas desigualdades desde 0 hasta $s$ para obtener lo siguiente:
+    \begin{equation}
+        f(x^{s+1}) \le f(x^0) - \gamma (1- \frac{1}{2}L \gamma) \sum_{k=0}^s || \nabla f(x^k)||^2.
+    \end{equation}
+    Sabiendo por \eqref{eq:integralderivative} que $\alpha = \gamma (1- \frac{1}{2}L \gamma) > 0$, podemos despejar la suma para obtener que
+    \begin{equation}
+        \sum_{k=0}^s || \nabla f(x^k)||^2 \le \alpha^{-1}(f(x^0) - f(x^{s+1})) \le \alpha^{-1}(f(x^0) - f^*)
+    \end{equation}
+
+    para toda $s$. Por lo tanto la suma es finita y por ello el término principal debe de tender a 0, es decir, $|| \nabla f(x^k) || \to 0$.
+\end{proof}
+
+Este método nos da una manera de obtener una sucesión que converja a un punto crítico de la función. Sin embargo debemos de recordar que el hecho de que $\nabla f(x) = 0$ si bien es una condición necesaria no es suficiente para que $x$ sea un mínimo. El contraejemplo por excelencia para este tipo de situaciones son los famosos puntos de silla. Es decir, el descenso por el gradiente puede ``quedarse atascado`` en cualquier punto estacionario, ya sea este un mínimo o un punto de silla. Además, este método no ``distingue`` entre un mínimo global o un mínimo local y no hay ningún tipo de garantía a la convergencia de un mínimo global.
+
+Aún así, el método del descenso por el gradiente es la base para el principal método de optimización usado en el \ac{AA}, el descenso estocástico por el gradiente. En un problema de \ac{AA}, normalmente intentamos minimizar una función de pérdida o coste, que se suele calcular como la suma de esta en cada uno de los valores de la muestra que usamos. 
+
+El descenso estocástico por el gradiente~\cite{Goodfellow-et-al-2016} es un método de optimización basado en el descenso por el gradiente ya expuesto en el que, en lugar de calcular el gradiente, se hace uso de un estimador insesgado del gradiente de la función de coste mediante el uso una muestra llamada \textit{minibatch} $\{ x^{(1)}, \ldots, x^{(m)}\}$. Formalmente sería:
+\begin{equation}
+    \hat{g} = \frac{1}{m}\nabla_\theta \sum_i L(f(x^{(i)}; \theta), y^{(i)})
+\end{equation}
+donde actualizaríamos $\theta$ en la dirección de $\hat{g}$. Aquí, $L$ es la función de coste o pérdida, $y^{(i)}$ será lo que próximamente llamemos etiqueta de $x^{(i)}$ y $f(x;\theta)$ es un funcional.

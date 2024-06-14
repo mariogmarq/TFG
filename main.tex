@@ -1,0 +1,340 @@
+% Plantilla para un Trabajo Fin de Grado de la Universidad de Granada,
+% adaptada para el Doble Grado en Ingeniería Informática y Matemáticas.
+%
+%  Autor: Mario Román.
+%  Licencia: GNU GPLv2.
+%
+% Esta plantilla es una adaptación al castellano de la plantilla
+% classicthesis de André Miede, que puede obtenerse en:
+%  https://ctan.org/tex-archive/macros/latex/contrib/classicthesis?lang=en
+% La plantilla original se licencia en GNU GPLv2.
+%
+% Esta plantilla usa símbolos de la Universidad de Granada sujetos a la normativa
+% de identidad visual corporativa, que puede encontrarse en:
+% http://secretariageneral.ugr.es/pages/ivc/normativa
+%
+% La compilación se realiza con las siguientes instrucciones:
+%   pdflatex --shell-escape main.tex
+%   bibtex main
+%   pdflatex --shell-escape main.tex
+%   pdflatex --shell-escape main.tex
+
+% Opciones del tipo de documento
+\documentclass[oneside,openright,titlepage,numbers=noenddot,openany,headinclude,footinclude=true,
+cleardoublepage=empty,abstractoff,BCOR=5mm,paper=a4,fontsize=12pt,main=spanish]{scrreprt}
+
+% Paquetes de latex que se cargan al inicio. Cubren la entrada de
+% texto, gráficos, código fuente y símbolos.
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{subcaption}
+\expandafter\def\csname ver@subfig.sty\endcsname{}
+
+\usepackage[table]{xcolor}
+\usepackage[final]{pdfpages}
+\usepackage{fixltx2e}
+\usepackage{graphicx} % Inclusión de imágenes.
+\usepackage{graphics}
+\usepackage{grffile}  % Distintos formatos para imágenes.
+\usepackage{longtable} % Tablas multipágina.
+\usepackage{wrapfig} % Coloca texto alrededor de una figura.
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{acronym}
+\usepackage{amsmath}
+\usepackage[inline]{enumitem}
+\usepackage{tikz}
+\usepackage{adjustbox}
+\usetikzlibrary{matrix}
+\usetikzlibrary{decorations.text}
+\usetikzlibrary{mindmap,shadows}
+\usepackage{xcolor}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage[numbers]{natbib}
+\usepackage{capt-of}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{tikz} % Diagramas conmutativos.
+\usepackage{minted} % Código fuente.
+\usepackage[T1]{fontenc}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{lineno,hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[inline]{enumitem}
+\usepackage{tabularx}
+\usepackage{tabu}
+\usepackage{amsmath}
+\usepackage{ amssymb }
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\usetikzlibrary{decorations.text}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{comment}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage[multiple]{footmisc}
+\usepackage{todonotes}
+\usepackage{rotfloat}
+\usepackage{graphicx}
+\usepackage{ amssymb }
+%\usepackage{enumerate}
+%\usepackage{natbib}
+
+\usepackage{lscape,caption} 
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{mathtools, cuted}
+%\usepackage{graphicx}
+\usepackage{url}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{color}
+\usepackage{booktabs}
+\usepackage{stmaryrd}
+\usepackage{epstopdf}
+\usepackage{pdflscape}
+\usepackage{stmaryrd}
+\usepackage{array}
+%\usepackage{tikz}
+\usepackage{caption}
+\usepackage{hyperref}
+
+\usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+\usetikzlibrary{matrix,chains,positioning,decorations.pathreplacing,arrows}
+
+
+\usepackage{dblfloatfix}
+\usepackage{flushend}
+
+\setcounter{tocdepth}{1}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\graphicspath{{./}{inffus/}}
+
+% Plantilla classicthesis
+\usepackage[beramono,eulerchapternumbers,linedheaders,parts,a5paper,dottedtoc,
+manychapters,pdfspacing]{classicthesis}
+
+% Geometría y espaciado de párrafos.
+\setcounter{secnumdepth}{0}
+\usepackage{enumitem}
+\setitemize{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt}
+\setlist[enumerate]{topsep=0pt,itemsep=-1ex,partopsep=1ex,parsep=1ex}
+\usepackage[top=1in, bottom=1.5in, left=1in, right=1in]{geometry}
+\setlength\itemsep{0em}
+\setlength{\parindent}{0pt}
+\usepackage{parskip}
+
+% Profundidad de la tabla de contenidos.
+\setcounter{secnumdepth}{3}
+
+% Usa el paquete minted para mostrar trozos de código.
+% Pueden seleccionarse el lenguaje apropiado y el estilo del código.
+\usepackage{minted}
+\usemintedstyle{colorful}
+\setminted{fontsize=\small}
+\setminted[haskell]{linenos=false,fontsize=\small}
+\renewcommand{\theFancyVerbLine}{\sffamily\textcolor[rgb]{0.5,0.5,1.0}{\oldstylenums{\arabic{FancyVerbLine}}}}
+
+% Archivos de configuración.
+\input{macros}  % En macros.tex se almacenan las opciones y comandos para escribir matemáticas.
+\input{classicthesis-config} % En classicthesis-config.tex se almacenan las opciones propias de la plantilla.
+
+% Color institucional UGR
+% \definecolor{ugrColor}{HTML}{ed1c3e} % Versión clara.
+\definecolor{ugrColor}{HTML}{c6474b}  % Usado en el título.
+\definecolor{ugrColor2}{HTML}{c6474b} % Usado en las secciones.
+
+% Datos de portada
+\usepackage{titling} % Facilita los datos de la portada
+\author{Mario García Márquez} 
+\date{\today}
+\title{Mitigando las vulnerabilidades del aprendizaje\\federado mediante Blockchain}
+
+% Portada
+\include{titlepage}
+\usepackage{wallpaper}
+%\usepackage[spanish]{babel}
+
+\DeclareRobustCommand{\chaptertitle}[1]{\textls[80]{\scshape #1}}
+
+
+\addto\captionsspanish{\renewcommand{\tablename}{Tabla}}
+
+\begin{document}
+
+\ThisULCornerWallPaper{1}{ugrA4.pdf}
+\maketitle
+
+\includepdf[pages=-]{pagina_en_blanc.pdf}
+
+\tableofcontents
+
+\thispagestyle{empty}
+
+\newpage
+
+
+Yo, \textbf{Mario García Márquez}, alumno del \textbf{Doble Grado de Ingeniería Informática y Matemáticas} de la \textbf{Escuela Técnica Superior de Ingeniería Informática y de Telecomunicaciones} y la \textbf{Facultad de Ciencias} de la \textbf{Universidad de Granada}, con DNI 77147974-V, autorizo la ubicación de la siguiente copia de mi Trabajo Fin de Grado en la Biblioteca del Centro para que pueda ser consultada por las personas que lo deseen.
+
+
+
+\vspace{25em}
+
+\begin{figure}[H]
+\vspace{4em}
+    \includegraphics[scale = 0.6]{firma_mario.jpg}
+\end{figure}
+
+Fdo: Mario García Márquez
+
+\begin{flushright}
+ Granada a 11 de junio \hspace{0.1em} del 2024
+\end{flushright}
+
+
+\includepdf[pages=-]{pagina_en_blanc.pdf}
+
+
+\thispagestyle{empty}
+
+D. \textbf{Francisco Herrera Triguero}, Catedrático del Área de Informática del departamento de \textbf{Ciencias de la Computación e Inteligencia Artificial} de la Universidad de Granada, Dª \textbf{Nuria Rodríguez Barroso}, Docente Invitada y Contrado Investigador con Cargo a Proyecto del departamento de \textbf{Ciencias de la Computación e Inteligencia Artificial} de la Universidad de Granada.
+
+\vspace{8em}
+
+Informan:
+
+Que el presente trabajo, titulado \textbf{Mitigando las Vulnerabilidades del Aprendizaje Federado Mediante Blockchain}, ha sido realizado bajo su supervisión por \textbf{Mario García Márquez}, y autorizan la defensa de dicho trabajo ante la Comisión de Evaluación que corresponda.
+
+Y para que conste, expide y firma el presente documento en Granada a 11 de Junio de 2024.
+
+
+\vspace{10em}
+
+\textbf{Los tutores:}
+
+\begin{minipage}{0.45\textwidth}
+\begin{figure}[H]
+    \includegraphics[scale = 0.4]{firma_paco.png}
+\end{figure}
+\textbf{Francisco Herrera Triguero}
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\vspace{2.3cm}
+
+\begin{figure}[H]
+    \includegraphics[scale = 0.75]{firma_nuria.png}
+\end{figure}
+\textbf{Nuria Rodríguez Barroso}
+\end{minipage}
+
+
+
+\vspace{10em}
+
+
+\includepdf[pages=-]{pagina_en_blanc.pdf}
+
+Yo, \textbf{Mario García Márquez}, alumno del \textbf{Doble Grado en Ingeniería Informática y Matemáticas} de la \textbf{Escuela Técnica Superior de Ingeniería Informática y Matemática} y de la \textbf{Facultad de Ciencias} de la \textbf{Universidad de Granada}, con DNI 77147974-V, \underline{declaro explícitamente} que el trabajo presentado es original, entendido en el sentido de que no he utilizado ninguna fuente sin citarla debidamente.
+
+\vspace{25em}
+
+\begin{figure}[H]
+\hspace{4em}
+    \includegraphics[scale = 0.6]{firma_mario.jpg}
+\end{figure}
+
+Fdo: Mario García Márquez
+
+\begin{flushright}
+ Granada a 11 de junio \hspace{0.1em} del  2024
+\end{flushright}
+
+\includepdf[pages=-]{pagina_en_blanc.pdf}
+
+\chapter*{Agradecimientos}
+\begin{flushleft}
+Este trabajo se puede ver como la conclusión de muchos años de educación y aprendizaje. La realización de este no podría haberse llevado a cabo sin la ayuda de mucha gente. Si buscamos al culpable más directo de estar leyendo esto no puedo decir otra persona que no sea mi tutora, Nuria. Durante estos 5 años de carrera me ha acompañado durante casi la mitad de ellos y además de una más que sobresaliente labor docente (porque hay profesores que marcan y eso es algo que se aprende con la experiencia) también es una de las mejores personas que he conocido jamás y una excelente amiga. Muchas gracias por ser el gigante que me ha puesto sobre sus hombros y me ha enseñado el camino a seguir.
+
+Pero quedarnos en el culpable directo sería poco, y es que hay gente que siempre ha estado ahí, como mi familia que siempre me ha servido un apoyo incondicional a cualquier decisión que he tomado y siempre me ha animado con todo lo académico que me ha acabado llenando tanto. También tengo que agradecer a mis compañeros de carrera: Nerea, Javi, Pablo, Maxim, Isa, Inma, Julio, Jaime y muchos más que no cabrían en tan poco espacio. Gracias por hacerme pensar, mejorar y reírme tanto. Aunque las horas de clases se me hayan hecho eternas, habéis logrado que los años se me hayan hecho cortos.
+
+También, pero no menos importante, tengo que agradecer a todos mis compañeros de Alemania que me han dado su calor incluso por los kilómetros que nos separan. Gracias Alba, Fueyo, Dani, Víctor y Ali. Sin vosotros difícilmente sería quien soy ahora y tampoco lo sería así este trabajo.
+
+Muchas gracias a todos.
+\end{flushleft}
+
+
+
+\includepdf[pages=-]{pagina_en_blanc.pdf}
+
+\input{capitulos/resumen}
+\includepdf[pages=-]{pagina_en_blanc.pdf}
+\input{capitulos/abstract}
+
+\includepdf[pages=-]{pagina_en_blanc.pdf}
+
+\include{acronyms} % Acronimos
+
+\includepdf[pages=-]{pagina_en_blanc.pdf}
+
+\part{Introducción}
+
+\input{capitulos/motivacion}
+
+\input{capitulos/objetivos}
+
+
+\part{Fundamentos teóricos}\label{sec:preliminares}
+ \input{capitulos/algebra_lineal}
+
+ \input{capitulos/probabilidad}
+
+ \input{capitulos/optimizacion}
+ \input{capitulos/krum}
+ \input{capitulos/deep_learning}
+ 
+
+\part{Preliminares en Aprendizaje Federado y Blockchain}\label{sec:fundamentosAaBl}
+\input{capitulos/federated_learning}
+\input{capitulos/blockchain}
+
+\part{Propuesta: Krum Federated Chain}\label{sec:kfc}
+
+
+ \input{capitulos/blockfed}
+ \input{capitulos/propuesta}
+
+\input{capitulos/experimentos}
+
+ \input{capitulos/resultados}
+
+
+\part{Conclusiones y trabajo futuro}
+
+\input{capitulos/conclusiones}
+
+
+% Añade sección de referencias al final del documento.
+% Selecciona un estilo de cita.
+\bibliographystyle{plainnat}
+% En research.bib están las entradas de los artículos que citamos.
+% Podemos cambiar el nombre del archivo aquí.
+\bibliography{references}
+
+\end{document}
+

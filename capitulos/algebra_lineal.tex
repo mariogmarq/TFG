@@ -1,0 +1,217 @@
+\chapter{Álgebra Lineal}\label{sec:algebra}
+En este capítulo introduciremos conceptos básicos de álgebra lineal~\cite{Goodfellow-et-al-2016}. Se necesitará un buen entendimiento en álgebra lineal para ser capaces de trabajar con muchos algoritmos de \ac{AA}, especialmente con aquellos de \textit{deep learning}.
+
+\section{Conceptos básicos}
+En nuestro estudio del álgebra lineal nos encontraremos con distintos tipos de objetivos matemáticos:
+\begin{itemize}
+    \item \textbf{Escalares:} un escalar es un número o elemento de un cuerpo, a diferencia de los demás elementos que estudiaremos más adelante que se suelen componer de varios elementos.
+    \item \textbf{Vectores:} un vector es un conjunto ordenado de números. Podemos referirnos a cada número del vector mediante su índice en el conjunto.
+    \item \textbf{Matrices:} una matriz es un conjunto ordenado de números de dos dimensiones. Así, para referirnos a un número lo haremos mediante dos índices.
+    \item \textbf{Tensores:} un algunas ocasiones necesitaremos más de dos ejes. En este caso recurriremos a los tensores, conjuntos de números organizados en una cuadrícula general con un número variable de ejes.
+\end{itemize}
+
+Una operación importante en matrices es la \textbf{transposición}. La operación transposición equivale a obtener la imagen de un espejo a través de la diagonal de la matriz. Es decir:
+
+\begin{definition}
+Dada una matriz $A$, definimos su \textbf{transpuesta}, denotada por $A^T$ verificando
+    \begin{equation}
+    (A^T)_{i,j} = A_{j,i}.
+    \end{equation}
+\end{definition}
+
+Pese a que hayamos definido la transpuesta como una operación sobre matrices, es fácilmente aplicable a vectores viéndolos como matrices fila y a escalares viéndolos como una matriz de una sola entrada.
+
+Es notorio mencionar que el transpuesto de un escalar es siempre él mismo, esto es $a^T=a$.
+
+En estas estructuras podemos definir las siguientes \textbf{operaciones}:
+\begin{enumerate}
+    \item Dadas dos matrices $A$ y $B$ de misma dimensión, podemos definir su suma como la matriz como la suma de las matrices componente a componente, esto es:
+    \begin{equation}
+        C = A + B \implies C_{i,j} = A_{i,j} + B_{i,j}.
+    \end{equation}
+    
+    \item Definimos la suma y producto de una matriz y un escalar mediante la operación componente a componente, esto es:
+    \begin{equation}
+        C = aA + c \implies C_{i,j} = aA_{i,j} + c.
+    \end{equation}
+
+    \item El producto matricial es una de las operaciones más usadas del álgebra lineal en el \ac{AA}.
+    \begin{definition}
+        Sea $A \in \mathbb{R}^{n \times m}$ y $B \in \mathbb{R}^{m \times k}$, entonces el \textbf{producto matricial} de $A$ y $B$ es una matriz $C \in \mathbb{R}^{n\times k}$ verificando
+        \begin{equation}
+            C_{i,j} = \sum_{k=1}^{m} A_{i,k}B_{k,j}.
+        \end{equation}
+    \end{definition}
+\end{enumerate}
+
+\textbf{Propiedades del producto matricial:}
+\begin{enumerate}
+    \item El producto matricial es distributivo:
+    \begin{equation}
+        A(B+C)=AB+AC.
+    \end{equation}
+    \item El producto matricial es asociativo:
+    \begin{equation}
+        (AB)C = A(BC).
+    \end{equation}
+    \item El producto matricial no es conmutativo:
+    \begin{equation}
+        AB \ne BA.
+    \end{equation}
+    \item La transpuesta de un producto es el producto inverso de sus transpuestas, esto es:
+    \begin{equation}
+        (AB)^T = B^T A^T.
+    \end{equation}
+\end{enumerate}
+
+De cara a la resolución de ecuaciones lineales haremos uso de la inversión de matrices. Para ello, primero debemos de introducir el concepto de matriz identidad.
+
+\begin{definition}
+    Definimos la \textbf{matriz identidad} como aquella que no modifica ningún vector cuando es multiplicado por ella. La matriz identidad de dimensión n quedará denotada por $I_n \in R^{n \times n}$ y verifica que
+    \begin{equation}
+        \forall x \in R^{n}, I_nx = x.
+    \end{equation}
+    Esta matriz se compone con una diagonal de 1 y todos sus demás elementos 0.
+\end{definition}
+
+\begin{definition}
+    Dada una matriz $A \in \mathbb{R}^{n \times n}$ definimos su matriz inversa $A^{-1} \in \mathbb{R}^{n \times n}$ como aquella matriz que cumple que
+    \begin{equation}
+        AA^{-1}=A^{-1}A=I_n.
+    \end{equation}
+
+    Cabe destacar que dada una matriz $A \in \mathbb{R}^{n \times n}$ su matriz inversa no tiene por qué existir. También, si $A^{-1}$ es la matriz inversa de $A$, es fácil ver que
+    \begin{equation}
+        (A^{-1})^{-1}=A.
+    \end{equation}
+\end{definition}
+
+\begin{definition}
+    Se define el \textbf{determinante} de una matriz cuadrada $A \in \mathbb{R}^{n \times n}$ y se denotará por $det(A)$ a la suma de los $n!$ productos formados por los n-factores que se obtienen de multiplicar n-elementos de la matriz de tal forma que cada producto contenga un solo elemento de cada fila y de cada columna de A.
+\end{definition}
+
+También nos interesará definir unos tipos especiales de matrices bastante común en \ac{AA}:
+\begin{definition}
+    Diremos que una matriz $A$ es simétrica si $A = A^T$.
+\end{definition}
+
+\begin{definition}
+    Diremos que una matriz $A$ es ortogonal si $A^{-1}=A^T$.
+\end{definition}
+
+\section{Sistemas Lineales de Ecuaciones}
+Ahora conocemos suficiente álgebra lineal como para poder definir un sistema lineal de ecuaciones.
+\begin{definition}
+    Dada una matriz conocida $A \in \mathbb{R}^{m \times n}$, un vector conocido $b \in \mathbb{R}^m$ y un vector desconocido $x \in \mathbb{R}^n$ definimos un \textbf{sistema lineal de ecuaciones} como la ecuación
+    \begin{equation}\label{linealeq}
+        Ax=b.
+    \end{equation}
+    Cada elemento $x_i$ de nuestro vector desconocido $x$ es una variable que deseamos conocer.
+\end{definition}
+
+Otra forma de escribir la ecuación \ref{linealeq} de manera más explícita es:
+\begin{equation}
+\begin{split}
+    A_{1,1}x_1 + A_{1,2}x_2 + \ldots + A_{1,n}x_n = b_1 \\
+    A_{2,1}x_1 + A_{2,2}x_2 + \ldots + A_{2,n}x_n = b_2 \\
+    \ldots \\
+    A_{m,1}x_1 + A_{m,2}x_2 + \ldots + A_{m,n}x_n = b_m.
+\end{split}
+\end{equation}
+
+Gran parte de las operaciones en el \textit{deep learning} se basan en ecuaciones de este tipo con la agregación de operaciones no lineales.
+
+\begin{definition}
+    Dado un conjunto de vectores $\{v^{(1)}, \ldots, v^{(n)} \}$ diremos que son \textbf{linealmente independientes} si dado un vector del conjunto, no se puede expresar como combinación lineal de los demás vectores. Esto es:
+    \begin{equation}
+        \nexists \alpha_j \ / \ v^{(i)} = \sum_{k=1}^n \alpha_k v^{(k)},\  k \ne i.
+    \end{equation}
+\end{definition}
+
+\section{Normas}
+Otro concepto muy usado en el \textit{deep learning} son las normas de vectores y matrices. Las normas son funciones que llevan vectores a escalares no negativos. De manera intuitiva se podría ver la norma de un vector $x$ como la distancia desde el origen hasta $x$. De manera más rigurosa:
+
+\begin{definition}
+    Una norma es una función $f: \mathbb{R}^n \to \mathbb{R}^+_0$ tal que:
+    \begin{enumerate}
+        \item $f(x) = 0 \implies x = 0$
+        \item $\forall y \in \mathbb{R}^n, f(x + y) \le f(x) + f(y)$ (desigualdad triangular)
+        \item $\forall \alpha \in \mathbb{R}, f(\alpha x)=|\alpha|f(x)$
+    \end{enumerate}
+\end{definition}
+
+\begin{definition}
+    Sea $x \in \mathbb{R}^n$, se define la norma $L^p$ con $p \in [1, \infty)$ de $x$ como:
+    \begin{equation}
+        || x ||_p = (\sum_{i=1}^n |x_i|^p)^\frac{1}{p}.
+    \end{equation}
+\end{definition}
+
+Algunos casos particulares de la norma $L^p$ son:
+\begin{enumerate}
+    \item \textbf{Norma euclídea:} es el caso cuando $p=2$. Es la medida más usada en el \ac{AA} y se suele denotar como $||x||$ por simplicidad. Con bastante frecuencia mediremos su cuadrado debido a su sencillez de cálculo, pues es fácil ver que $||x||^2=xx^T$.
+    \item \textbf{Norma $L^1$:} también bastante usada se trata del caso $p=1$:
+    \begin{equation}
+        ||x||_1 = \sum_{i=1}^n |x_i|.
+    \end{equation}
+    \item \textbf{Norma $L^\infty$:} también conocida como \textbf{norma del máximo} está definida mediante:
+    \begin{equation}
+        ||x||_\infty = \max_i |x_i|.
+    \end{equation}
+\end{enumerate}
+
+\section{Descomposición en autovalores}
+Muchos objetos matemáticos pueden ser mejor comprendidos separándolos en partes. Por ejemplo, los números enteros pueden ser vistos como una descomposición en números primos. En el caso de las matrices, una de las descomposiciones más usadas es en \textbf{autovalores} o \textbf{valores propios} y los autovectores o vectores propios.
+
+\begin{definition}
+    Un vector $v \in \mathbb{R}^n$ y un escalar $\lambda \in \mathbb{R}$ se dirán que son un \textbf{vector propio} y un \textbf{valor propio} respectivamente de una matriz cuadrada $A \in \mathbb{R}^{n \times n}$ si se verifica que
+    \begin{equation}
+        Av=\lambda v.
+    \end{equation}
+\end{definition}
+
+\begin{proposition}
+Si $v$ es un vector propio de una matriz cuadrada $A$, entonces también lo será $sv$ con $s \in \mathbb{R}, s \ne 0$. Es más, $v$ y $sv$ comparten el mismo valor propio:
+\begin{equation}
+    Av = \lambda v \implies A(sv) = \lambda (sv).
+\end{equation}
+\end{proposition}
+
+\begin{proposition}
+    Dada una matriz cuadrada $A$, entonces su determinante $det(A)$ se corresponde con el producto de sus valores propios:
+    \begin{equation}
+        det(A) = \prod_{i} \lambda_i.
+    \end{equation}
+\end{proposition}
+
+Veamos la descomposición matricial que se produce mediante este tipo de vectores. Para ello supongamos que nuestra matriz $A$ tiene $n$ vectores propios linealmente independientes $\{v^{(1)}, \ldots, v^{(n)} \}$ asociados a los valores propios $\{ \lambda_1, \ldots, \lambda_n \}$. Podemos unir estos vectores en una matriz $V$ con un vector propio por columna: 
+\begin{equation}
+    V = [v^{(1)}, \ldots, v^{(n)}].
+\end{equation}
+Del mismo modo, podemos unir los valores propios en un vector denotado por $\lambda$. Entonces:
+\begin{proposition}
+    La \textbf{descomposición en valores propios} de $A$ viene dada por
+    \begin{equation}
+        A = V diag(\lambda)V^{-1}.
+    \end{equation}
+\end{proposition}
+
+Un problema surge cuando dada una matriz queremos buscar sus vectores y valores propios. Sin embargo, en el caso de que una matriz sea simétrica, el cuál es un caso bastante común en \ac{AA}, esta puede ser descompuesta usando solo valores propios y vectores propios de números reales.
+
+\begin{proposition}
+    Toda matriz $A$ simétrica puede descomponerse en valores propios reales de la forma:
+    \begin{equation}
+        A = Q \Lambda Q^T
+    \end{equation}
+    donde $Q$ es una matriz ortogonal compuesta de los vectores propios de $A$ y $\Lambda$ es una matriz diagonal.
+\end{proposition}
+
+Mediante el uso de los valores propios de una matriz $A$ podemos clasificar las matrices en:
+\begin{itemize}
+    \item \textbf{Definida positiva:} si $\lambda_i > 0\ \forall i \in {1, \ldots, n}$.
+    \item \textbf{Semidefinida positiva:} si $\lambda_i \ge 0\ \forall i \in {1, \ldots, n}$.
+    \item \textbf{Definida negativa:} si $\lambda_i < 0\ \forall i \in {1, \ldots, n}$.
+    \item \textbf{Semidefinida negativa:} si $\lambda_i \le 0\ \forall i \in {1, \ldots, n}$.
+\end{itemize}
+
+Cabe destacar que dada una matriz $A$ no tiene por qué ser clasificada en uno de los casos anteriores. Sin embargo es interesante pues si una matriz $A$ es semidefinida positiva entonces podemos garantizar que $x^TAx \ge 0, \forall x$ lo cual es un requisito en ciertos algoritmos de \ac{AA}.

@@ -1,0 +1,29 @@
+\chapter{Propuesta: Krum Federated 
+Chain (KFC)}\label{sec:propuesta}
+
+Una vez introducidos todos los conceptos necesarios, en esta sección exponemos nuestra propuesta de mecanismo de defensa frente a ataques adversarios en \ac{FL} llamada \ac{KFC}. La propuesta parte de la hipótesis de que el mecanismo de consenso \ac{PoFL} puede ser una defensa contra ataques adversarios en \ac{FL}. Además, de las vulnerabilidades identificadas respecto a la configuración de los ataques, proponemos \ac{KFC}, una defensa basada en la combinación de Krum y blockchain con el mecanismo de consenso \ac{PoFL} para defender esquemas de \ac{FL} contra cualquier configuración de ataques adversarios.
+
+\section{Hipótesis: PoFL como mecanismo de defensa}
+Se puede apreciar que el mecanismo de consenso \ac{PoFL} exhibe una potencial defensa contra ataques adversarios. Los ataques bizantinos consisten en perjudicar el rendimiento del modelo federado y los ataques de \textit{backdoor} involucran a un adversario dentro de una \textit{pool} intentando manipular el proceso de entrenamiento del modelo para introducir una tarea secundaria. En el segundo caso, el hecho de estar optimizando varios objetivos pueden llevar a una ligera degradación en el rendimiento del modelo en la tarea original. 
+
+Mediante el uso de un mecanismo de consenso basado en el rendimiento del modelo y \textit{pooled-mining}, \ac{PoFL} desalienta estos tipos de ataques. Las \textit{pools} que contengan a clientes adversarios son probables de producir modelos con una precisión inferior en el conjunto de datos preestablecido en comparación con las \textit{pools} sin clientes maliciosos. Como consecuencia, el mecanismo de consenso \ac{PoFL} favorecería a las \textit{pools} con el modelo con mejor rendimiento, filtrando de manera eficaz al modelo con la tarea inyectada y por tanto mitigando el ataque.
+
+\section{Krum Federated Chain}
+
+Es importante saber que la potencial resistencia de \ac{PoFL} contra ataques adversarios depende de la condición de que siempre exista una \textit{pool} sin ningún cliente malicioso en ella. Esta condición puede ser considerada demasiado optimista y exigente para el mundo real. Por lo tanto, proponemos la arquitectura \ac{KFC} como una alternativa a \ac{PoFL} con una seguridad más robusta. Aunque \ac{KFC} mantiene la misma arquitectura fundamental y principios de eficiencia energética que \ac{PoFL}, incorpora mecanismos de seguridad adicionales para mitigar ataques adversarios incluso en la presencia de actores maliciosos en todas las \textit{pools} de la red.
+
+\ac{KFC} hace uso del operador de agregación Krum~\cite{krum-2017}, expuesto previamente en la sección \ref{sec:krum}, para mejorar su resistencia contra ataques al modelo federado. Recordamos que este operador funciona ordenando actualizaciones de clientes según la distancia geométrica entre las distribuciones de actualizaciones de modelo respectivas. Para ello y recuperando la notación de la Sección~\ref{sec:krum}, a cada cliente $i$ se le asigna la puntación
+
+\begin{equation}
+    s(i) = \sum_{i\to j} || V_i - V_j ||^2
+\end{equation}
+
+donde $i \to j$ denotaba el hecho de que el vector $V_j$ pertenecía al conjunto de los $n-f-2$ vectores más cercanos al vector $V_i$, con $i \ne j$. A continuación, selecciona la actualización más cercana a la mayoría, lo que efectivamente filtra a los outliers. Esto es, el vector $V$ resultado de la regla de agregación $KR(V_1, \ldots, V_n)$ se define como aquel vector $V_{i_*}$ tal que
+\begin{equation}
+    s(i_*) \le s(i) \quad \forall i \in \{ 1, \ldots, n\}.
+\end{equation}
+
+
+Los clientes adversarios que intentan manipular el modelo tienen más probabilidades de generar actualizaciones que se desvían significativamente de la norma, lo que los hace más propensos a ser identificados y excluidos por el operador Krum. 
+
+Así, \ac{KFC} consiste en la combinación de la arquitectura base de \ac{PoFL} con la regla de agregación Krum para reforzar la seguridad a nivel de \textit{pool}. Esta decisión de diseño permite a \ac{KFC} verse beneficiado por la resistencia a ataques adversarios innata de \ac{PoFL} debido al uso de \textit{pooled-mining} y su mecanismo de consenso. Además, Krum refuerza esta resistencia mediante el filtrado de \textit{outliers} dentro de las distribuciones de las actualizaciones dentro de cada \textit{pool}. Por lo tanto, no hace falta mantener la hipótesis de la existencia de una \textit{pool} sin ningún tipo de actor malicioso. Este acercamiento combinado hace uso de distintos tipos de mecanismos de defensa en distintas partes del esquema federado, llegando así a una solución más robusta para \ac{FL} bajo condiciones adversarias.
